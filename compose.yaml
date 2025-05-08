@@ -1,10 +1,10 @@
 services:
   mariadb:
-    image: 'mariadb:latest'
+    image: 'mariadb:10.6.7'
     environment:
-      - 'MARIADB_DATABASE=mydatabase'
+      - 'MARIADB_DATABASE=boilerplate'
       - 'MARIADB_PASSWORD=secret'
       - 'MARIADB_ROOT_PASSWORD=verysecret'
       - 'MARIADB_USER=myuser'
     ports:
-      - '3306'
+      - '3306:3306'

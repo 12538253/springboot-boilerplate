@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: boilerplate
+
+  lifecycle:
+    timeout-per-shutdown-phase: 0 # ? Graceful shutdown ??
+
+  docker:
+    compose:
+      lifecycle-management: START_ONLY
+
+
+  sql:
+    init:
+      mode: always
+
+  datasource:
+    url: jdbc:p6spy:mariadb://localhost:3306/boilerplate?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true
+    username: myuser
+    password: secret
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+
+
+  threads:
+    virtual:
+      enabled: true
+
+
+server:
+  port: 21212
+
+
+logging:
+  exception-conversion-word: '%wEx'
+  file:
+    path: "logs/"
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %highlight(%-5level) %magenta(${PID}) --- %cyan(%logger{36}) : %msg%n"
+  level:
+    org.springframework:
+      security: TRACE
+      web: DEBUG # 일반적인 Spring Web 로깅 레벨
+      servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE # 핸들러 매핑 상세 로그
+    com.devtoolkit.boilerplate: DEBUG
+    p6spy: DEBUG
+
+application:
+  security:
+    jwt:
+      secret-key: 462D4A614E645266556A586E3272357538782F413F4428472B4B625065536856
+      expiration: 600000  # 6000 = 1분 테스트
+      refresh-token:
+        expiration: 604800000 # 7 days
