@@ -1,4 +1,4 @@
-package com.devtoolkit.boilerplate.auth.infra.jwt;
+package com.devtoolkit.boilerplate.auth.filter;
 
 import com.devtoolkit.boilerplate.auth.repository.TokenRepository;
 import com.devtoolkit.boilerplate.auth.service.JwtService;

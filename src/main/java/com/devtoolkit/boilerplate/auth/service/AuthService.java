@@ -3,7 +3,7 @@ package com.devtoolkit.boilerplate.auth.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.devtoolkit.boilerplate.auth.model.dto.AuthResponse;
 import com.devtoolkit.boilerplate.auth.model.enums.TokenType;
-import com.devtoolkit.boilerplate.auth.model.entity.TokenInfo;
+import com.devtoolkit.boilerplate.auth.model.entity.Token;
 import com.devtoolkit.boilerplate.auth.repository.TokenRepository;
 import com.devtoolkit.boilerplate.auth.model.entity.User;
 import com.devtoolkit.boilerplate.auth.repository.UserRepository;
@@ -39,7 +39,7 @@ public class AuthService {
     }
 
     private void saveToken(User user, String jwtToken) {
-        TokenInfo token = TokenInfo.builder()
+        Token token = Token.builder()
                 .token(jwtToken)
                 .tokenType(TokenType.BEARER)
                 .revoked(false)

@@ -1,4 +1,4 @@
-package com.devtoolkit.boilerplate.auth.infra.security;
+package com.devtoolkit.boilerplate.auth.handler;
 
 import com.devtoolkit.boilerplate.auth.repository.TokenRepository;
 import jakarta.servlet.http.HttpServletRequest;

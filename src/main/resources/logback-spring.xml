@@ -19,24 +19,13 @@
             </encoder>
         </appender>
 
-        <logger name="org.springframework.security" level="TRACE" additivity="false">
+        <logger name="org.springframework" level="INFO" additivity="false">
             <appender-ref ref="CONSOLE_APPENDER"/>
         </logger>
-        <logger name="org.springframework.web" level="DEBUG" additivity="false">
-            <appender-ref ref="CONSOLE_APPENDER"/>
-        </logger>
-        <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="TRACE" additivity="false">
-            <appender-ref ref="CONSOLE_APPENDER"/>
-        </logger>
-        <!-- Other org.springframework.* packages will use the root logger's level (INFO) -->
 
-        <logger name="org.springframework.web.servlet.DispatcherServlet" level="TRACE" additivity="false">
+        <logger name="com.group" level="DEBUG" additivity="false">
             <appender-ref ref="CONSOLE_APPENDER"/>
         </logger>
-        <logger name="com.devtoolkit.boilerplate" level="TRACE" additivity="false"> <!-- Changed to TRACE for max detail -->
-            <appender-ref ref="CONSOLE_APPENDER"/>
-        </logger>
-        <!-- If 'com.group' was a specific package you need to log, add its own logger definition here. -->
 
         <logger name="jdbc" level="OFF"/>
         <logger name="jdbc.sqlonly" level="OFF"/>

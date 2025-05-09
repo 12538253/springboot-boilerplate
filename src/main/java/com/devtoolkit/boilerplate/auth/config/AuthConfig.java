@@ -1,4 +1,4 @@
-package com.devtoolkit.boilerplate.auth.infra.security;
+package com.devtoolkit.boilerplate.auth.config;
 
 import com.devtoolkit.boilerplate.auth.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
-public class ApplicationConfig {
+public class AuthConfig {
     private final UserRepository userRepository;
 
     @Bean

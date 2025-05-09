@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TokenInfo {
+public class Token {
     private Long id;
     private String token;
     private TokenType tokenType;
@@ -16,7 +16,7 @@ public class TokenInfo {
     private String userName;
 
     @Builder
-    public TokenInfo(Long id, String token, TokenType tokenType, boolean expired, boolean revoked, String userName) {
+    public Token(Long id, String token, TokenType tokenType, boolean expired, boolean revoked, String userName) {
         this.id = id;
         this.token = token;
         this.tokenType = tokenType;

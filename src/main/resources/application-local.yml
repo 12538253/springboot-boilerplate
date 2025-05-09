@@ -39,8 +39,6 @@ logging:
   level:
     org.springframework:
       security: TRACE
-      web: DEBUG # 일반적인 Spring Web 로깅 레벨
-      servlet.mvc.method.annotation.RequestMappingHandlerMapping: TRACE # 핸들러 매핑 상세 로그
     com.devtoolkit.boilerplate: DEBUG
     p6spy: DEBUG
 

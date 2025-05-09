@@ -1,7 +1,7 @@
 package com.devtoolkit.boilerplate.auth.repository;
 
 
-import com.devtoolkit.boilerplate.auth.model.entity.TokenInfo;
+import com.devtoolkit.boilerplate.auth.model.entity.Token;
 import com.devtoolkit.boilerplate.auth.model.enums.TokenType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.simple.JdbcClient;
@@ -16,7 +16,7 @@ public class TokenRepository {
 
     private final JdbcClient jdbcClient;
 
-    public List<TokenInfo> findAllValidTokenByUserId(String userName) {
+    public List<Token> findAllValidTokenByUserId(String userName) {
         if (userName == null) {
             throw new IllegalArgumentException("userName must not be null");
         }
@@ -29,7 +29,7 @@ public class TokenRepository {
 
         return jdbcClient.sql(sql)
                 .param("userName", userName)
-                .query((rs, rowNum) -> TokenInfo.builder()
+                .query((rs, rowNum) -> Token.builder()
                         .id(rs.getLong("id"))
                         .token(rs.getString("token"))
                         .tokenType(TokenType.valueOf(rs.getString("token_type")))
@@ -40,7 +40,7 @@ public class TokenRepository {
                 .list();
     }
 
-    public Optional<TokenInfo> findByToken(String token) {
+    public Optional<Token> findByToken(String token) {
         if (token == null) {
             throw new IllegalArgumentException("token must not be null");
         }
@@ -53,7 +53,7 @@ public class TokenRepository {
 
         return jdbcClient.sql(sql)
                 .param("token", token)
-                .query((rs, rowNum) -> TokenInfo.builder()
+                .query((rs, rowNum) -> Token.builder()
                         .id(rs.getLong("id"))
                         .token(rs.getString("token"))
                         .tokenType(TokenType.valueOf(rs.getString("token_type")))
@@ -64,7 +64,7 @@ public class TokenRepository {
                 .optional();
     }
 
-    public void saveToken(TokenInfo token) {
+    public void saveToken(Token token) {
         String sql = """
                     INSERT INTO tokens (token, token_type, expired, revoked, user_name)
                     VALUES (:token, :tokenType, :expired, :revoked, :userName)
