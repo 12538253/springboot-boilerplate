@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,14 +24,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/auth/login")
-    public ResponseEntity<AuthResponse> authenticate(@RequestBody AuthRequest login) {
+    public AuthResponse authenticate(@RequestBody AuthRequest login) {
         User user = User.builder()
                 .email(login.email())
                 .password(login.password())
                 .build();
-        return ResponseEntity.ok(authService.authenticate(user));
-        // authority : 회원가입 , 인가
-        // authentication : 로그인 , 인증 
+        
+        return authService.authenticate(user);
     }
 
     @PostMapping("/auth/refresh-token")
@@ -38,7 +39,9 @@ public class AuthController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<String> hello(Authentication authentication) {
-        return ResponseEntity.ok("현재 로그인한 사용자: " + authentication.getName());
+    public Map<String, Object> hello(Authentication authentication) {
+        Map<String, Object> attributes = new HashMap<>();
+        attributes.put("name", authentication.getName());
+        return attributes;
     }
 }
