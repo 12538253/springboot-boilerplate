@@ -12,26 +12,30 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
-
+import org.springframework.security.config.http.SessionCreationPolicy;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final ObjectMapper objectMapper;
+    
+    public SecurityConfig(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             AuthenticationProvider authenticationProvider,
             JwtAuthenticationFilter jwtAuthFilter,
-            LogoutHandler logoutHandler,
-            ObjectMapper objectMapper) throws Exception {
+            LogoutHandler logoutHandler) throws Exception {
         
         return http
                 .csrf(AbstractHttpConfigurer::disable)
@@ -43,8 +47,8 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
-                        .authenticationEntryPoint(authenticationEntryPoint(objectMapper))
-                        .accessDeniedHandler(accessDeniedHandler(objectMapper))
+                        .authenticationEntryPoint(authenticationEntryPoint())
+                        .accessDeniedHandler(accessDeniedHandler())
                 )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
@@ -56,17 +60,10 @@ public class SecurityConfig {
                 .build();
     }
     
-    @Bean
-    public ObjectMapper objectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.registerModule(new com.fasterxml.jackson.datatype.jsr310.JavaTimeModule());
-        // 날짜/시간을 ISO-8601 형식의 문자열로 직렬화
-        objectMapper.disable(com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        return objectMapper;
-    }
+
     
     @Bean
-    public AuthenticationEntryPoint authenticationEntryPoint(ObjectMapper objectMapper) {
+    public AuthenticationEntryPoint authenticationEntryPoint() {
         return (request, response, authException) -> {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -74,14 +71,14 @@ public class SecurityConfig {
             
             Response.Fail errorResponse = Response.Fail.of(
                     ResponseCode.UNAUTHORIZED, 
-                    "인증이 필요합니다.");
+                    ResponseCode.UNAUTHORIZED.message());
                     
-            response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+            response.getWriter().write(this.objectMapper.writeValueAsString(errorResponse));
         };
     }
     
     @Bean
-    public AccessDeniedHandler accessDeniedHandler(ObjectMapper objectMapper) {
+    public AccessDeniedHandler accessDeniedHandler() {
         return (request, response, accessDeniedException) -> {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -89,9 +86,9 @@ public class SecurityConfig {
             
             Response.Fail errorResponse = Response.Fail.of(
                     ResponseCode.FORBIDDEN, 
-                    "접근 권한이 없습니다.");
+                    ResponseCode.FORBIDDEN.message());
                     
-            response.getWriter().write(objectMapper.writeValueAsString(errorResponse));
+            response.getWriter().write(this.objectMapper.writeValueAsString(errorResponse));
         };
     }
 }
