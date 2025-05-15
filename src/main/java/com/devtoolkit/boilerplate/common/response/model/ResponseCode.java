@@ -19,10 +19,11 @@ public enum ResponseCode {
     TYPE_MISMATCH("C005", "잘못된 파라미터 타입입니다."),
 
     // 인증/권한 오류 (Axxx)
-    UNAUTHORIZED("A001", "인증이 필요합니다."),
-    FORBIDDEN("A002", "접근 권한이 없습니다."),
-    TOKEN_EXPIRED("A003", "인증 토큰이 만료되었습니다."),
-    LOGIN_REQUIRED("A004", "로그인이 필요합니다.");
+    UNAUTHORIZED("A001", "유효한 인증 정보가 없습니다."),
+    FORBIDDEN("A002", "해당 리소스에 대한 접근 권한이 없습니다."),
+    TOKEN_EXPIRED("A003", "인증 토큰이 만료되었습니다. 다시 로그인해주세요."),
+    INVALID_TOKEN("A004", "잘못된 형식의 토큰입니다."),
+    LOGIN_REQUIRED("A005", "서비스 이용을 위해 로그인이 필요합니다.");
 
 
     private final String code;
